@@ -1,0 +1,57 @@
+{% extends 'fotos/base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+<h1 class="display-6">{{title}}</h1>
+
+    <br>
+    <p>Register with social network:
+        <a href="{% url "social:begin" "github" %}">GitHub</a>
+         or
+        <a href="{% url "social:begin" "google-oauth2" %}">Google</a>
+    </p>
+    <br>
+
+<form method="post">
+    {% csrf_token %}
+        <div class="col-md-4">
+            {% for f in form %}
+                <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
+                <div class="form-error">{{ f.errors }}</div>
+            {% endfor %}
+        </div>
+    <button class="btn btn-primary" type="submit">REGISTER</button>
+</form>
+</div>
+
+{% block javascript %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <script>
+      $(document).ready(function () {
+          $('#id_username').keyup(function () {
+              $.ajax({
+                  data: $(this).serialize(),
+                  url: "{% url 'validate_username' %}",
+                  success: function (response) {
+                      if (response.is_taken == true) {
+                          $('#id_username').removeClass('is-valid').addClass('is-invalid');
+                          $('#id_username').after('<div class="invalid-feedback d-block" id="usernameError">This username is not available!</div>')
+                      }
+                      else {
+                          $('#id_username').removeClass('is-invalid').addClass('is-valid');
+                          $('#usernameError').remove();
+                      }
+                  },
+                  error: function (response) {
+                      console.log(response.responseJSON.errors)
+                  }
+              });
+              return false;
+          });
+      })
+  </script>
+
+{% endblock javascript %}
+
+{% endblock %}

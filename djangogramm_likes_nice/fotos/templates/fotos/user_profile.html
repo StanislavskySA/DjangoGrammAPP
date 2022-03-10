@@ -1,0 +1,33 @@
+{% extends 'fotos/base.html' %}
+
+{% block content %}
+
+{% if request.user.is_authenticated %}
+
+    <div class="container-fluid">
+    <h1 class="display-6">{{title}}</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="col-md-4">
+        {% for f in form %}
+        <p><label class="form-label" for="{{ f.id_for_label }}">{{f.label}}: </label>{{ f }}</p>
+        <div class="form-error">{{ f.errors }}</div>
+        {% endfor %}
+        </div>
+    <button class="btn btn-primary" type="submit">UPDATE</button>
+    </form>
+    </div>
+
+{% else %}
+
+        <div class="container-fluid">
+    	        <h1 class="display-6">Please login to see all users photos</h1>
+    	        <img class="img-fluid"
+     	        src="../static/fotos/images/fotos_pic.jpeg"
+     	        alt="Photos">
+	    </div>
+
+{% endif %}
+
+{% endblock %}

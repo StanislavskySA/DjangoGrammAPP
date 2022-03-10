@@ -1,0 +1,32 @@
+{% extends 'fotos/base.html' %}
+
+{% block content %}
+
+{% if request.user.is_authenticated %}
+	<div class="container-fluid">
+		<h1 class="display-6">My followers:</h1>
+		<br>
+		<div class="col-md-4">
+			<ul class="list-group">
+				{% for fol_name in my_followers_names %}
+					{% for fol_id in my_followers_ids %}
+						{% if fol_id.user_id == fol_name.id %}
+							<li class="list-group-item">
+								{{fol_name.first_name}} {{fol_name.last_name}}
+							</li>
+						{% endif %}
+					{% endfor %}
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+{% else %}
+	<div class="container-fluid">
+    	<h1 class="display-6">Please login to see all users photos</h1>
+    	<img class="img-fluid"
+     	src="../static/fotos/images/fotos_pic.jpeg"
+     	alt="Photos">
+	</div>
+{% endif %}
+{% endblock %}
+

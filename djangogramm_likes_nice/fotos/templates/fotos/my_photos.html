@@ -1,0 +1,54 @@
+{% extends 'fotos/base.html' %}
+
+{% block content %}
+
+{% if request.user.is_authenticated %}
+        <div class="container-fluid">
+			<h1 class="display-6">Photo editing:</h1>
+			<br>
+					<div class="container-fluid">
+						<form action="" enctype="multipart/form-data" method="POST">
+							{% csrf_token %}
+							<div class="col-md-4">
+								<input type="file" class="form-label" name="file" placeholder="File">
+							</div>
+							<div class="col-md-4">
+								<input type="text" class="form-label" name="title" placeholder="Title">
+							</div>
+							<div class="col-md-4">
+								<input type="text" class="form-label" name="description" placeholder="Description">
+							</div>
+							<button class="btn btn-primary" name="btn_upload" type="submit">UPLOAD</button>
+						</form>
+					</div>
+		</div>
+		<br>
+		<div class="container-fluid">
+			 <h2 class="display-6">My photos</h2>
+             <div class="card-group">
+				{% for f in fotos %}
+				 	<div class="card" style="width: 18rem;">
+						<img src="{{f.photo.url}}" class="card-img-top">
+						<div class="card-body">
+							<h5 class="card-title">{{f.title}}</h5>
+							<p class="card-text">{{f.description}}</p>
+						</div>
+						<form action="" method="POST">
+							{% csrf_token %}
+							<input type="hidden" name="foto_id" placeholder="0" value={{f.id}}>
+							<button class="btn btn-danger" name="btn_delete" type="submit">DELETE</button>
+						</form>
+					</div>
+				{% endfor %}
+			</div>
+        </div>
+{% else %}
+        <div class="container-fluid">
+    	        <h1 class="display-6">Please login to see all users photos</h1>
+    	        <img class="img-fluid"
+     	        src="../static/fotos/images/fotos_pic.jpeg"
+     	        alt="Photos">
+	    </div>
+{% endif %}
+{% endblock %}
+

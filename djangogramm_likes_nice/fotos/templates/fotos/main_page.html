@@ -1,0 +1,51 @@
+{% extends 'fotos/base.html' %}
+
+{% block content %}
+
+{% if request.user.is_authenticated %}
+<ul class="list-group">
+	{% for u in user_data %}
+	    <li class="list-group-item"><h2>{{u.first_name}} {{u.last_name}}</h2>
+			<div class="card-group">
+			{% for f in fotos %}
+                {% if f.user_id == u.id %}
+						<div class="card" style="width: 18rem;">
+								<img src="{{f.photo.url}}" class="card-img-top">
+								<div class="card-body">
+								<h5 class="card-title">{{f.title}}</h5>
+								<p class="card-text">{{f.description}}</p>
+									<form action="" method="POST">
+										{% csrf_token %}
+										<input type="hidden" name="foto_id" placeholder="0" value={{f.id}}>
+										<button class="btn btn-primary" type="submit" name="btnlike" >
+													Like
+										</button>
+										{{f.liked}} likes
+									</form>
+								</div>
+						</div>
+                {% endif %}
+			{% endfor %}
+			</div>
+			<div class="container-fluid">
+			<form action="" method="POST">
+				{% csrf_token %}
+				<input type="hidden" name="author_id" placeholder=0 value={{u.id}}>
+				<button class="btn btn-secondary" type="submit" name="btnfollow" >
+					Follow {{ u.first_name }}
+				</button>
+			</form>
+				<br><br>
+			</div>
+		</li>
+	{% endfor %}
+</ul>
+{% else %}
+	<div class="container-fluid">
+    	<h1 class="display-6">Please login to see all users photos</h1>
+    	<img class="img-fluid"
+     	src="../static/fotos/images/fotos_pic.jpeg"
+     	alt="Photos">
+	</div>
+{% endif %}
+{% endblock %}

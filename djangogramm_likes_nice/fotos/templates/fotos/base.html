@@ -1,0 +1,74 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="{% static 'fotos/js/index.js' %}"></script>
+
+    <title>Djangogramm</title>
+  </head>
+  <body>
+
+	{% block mainmenu %}
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	  <div class="container-fluid">
+		<a class="navbar-brand" href="{% url 'main_page' %}">DjangoGramm</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+				data-bs-target="#navbarSupportedContent"
+				aria-controls="navbarSupportedContent"
+				aria-expanded="false" aria-label="Toggle navigation">
+		  <span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+			  {% for m in menu %}
+			  	<li class="nav-item"><a class="nav-link" href="{% url m.url_name %}">{{m.title}}</a></li>
+			  {% endfor %}
+		  </ul>
+		  <ul class="nav justify-content-end">
+			  {% if request.user.is_authenticated %}
+					<li class="nav-item"><a class="nav-link active">{{user.username}}</a></li>
+			  		<li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+			  {% else %}
+					<li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Registration</a>
+			  		<li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+			  {% endif %}
+		  </ul>
+		</div>
+	  </div>
+	</nav>
+
+	{% endblock mainmenu %}
+
+		<!-- Блок контента -->
+		<div class="content-text">
+		{% block content %}
+		{% endblock %}
+		</div>
+
+<div class="container-fluid">
+	<br><br><br>
+  <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+    <p class="col-md-4 mb-0 text-muted">&copy; 2021 DjangoGramm, Inc</p>
+
+    <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+      <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
+    </a>
+
+    <ul class="nav col-md-4 justify-content-end">
+      <li class="nav-item"><a href="{% url 'main_page' %}" class="nav-link px-2 text-muted">Home</a></li>
+	  <li class="nav-item"><a href="{% url 'feedback' %}" class="nav-link px-2 text-muted">Feedback</a></li>
+      <li class="nav-item"><a href="{% url 'login' %}" class="nav-link px-2 text-muted">Login</a></li>
+      <li class="nav-item"><a href="{% url 'register' %}" class="nav-link px-2 text-muted">Register</a></li>
+    </ul>
+  </footer>
+</div>
+
+</body>
+</html>
